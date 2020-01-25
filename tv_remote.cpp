@@ -7,6 +7,7 @@ int curr_channel = 1;
 int last_channel = 1;
 int counter = 0;
 int counter_2 = 0;
+std::ofstream fout;
 extern int r;
 
 tv_remote::tv_remote(QWidget *parent)
@@ -59,6 +60,23 @@ void tv_remote::channale_update()
     else
     {
         ui->current_channel->setText("");
+    }
+    if (counter > 25 + r)
+    {
+        if (counter_2 % 10 == 0)
+        {
+            fout.open("replay.txt", std::ios_base::app);
+            ui->button_on_off->move(ui->button_on_off->x() + 3 + (counter_2 / 2), ui->button_on_off->y());
+            fout << "counter = " << counter << "\tbutton x = " << ui->button_on_off->x() << std::endl;
+            fout.close();
+        }
+        counter_2++;
+    }
+    if (counter == 0)
+    {
+        fout.open("replay.txt");
+        fout << "initial position: button x = " <<  ui->button_on_off->x() << std::endl;
+        fout.close();
     }
 }
 
